@@ -61,5 +61,25 @@ alter table flota.poliza add constraint pk_coche_poliza foreign key (Coche) refe
 alter table flota.poliza add constraint pk_moneda_poliza foreign key (Moneda) references flota.moneda (Nombre_moneda);
 alter table flota.aseguradora add constraint pk_poliza_aseguradora foreign key (Poliza) references flota.poliza (N_Poliza);
 
-select Modelo, Marca, fecha_compra, matrícula, color, kilometraje from flota.coche;
-select Razón_social, Poliza from flota.aseguradora;
+-- Seleccionar los datos
+
+SELECT
+    c.Modelo,
+    m.Nombre_marcas AS Marca,
+    g.Grupo_Empresarial AS Grupo,
+    c.fecha_compra,
+    c.matrícula,
+    c.color,
+    c.kilometraje,
+    a.Razón_social,
+    p.N_Poliza AS Póliza
+FROM
+    flota.coche c
+INNER JOIN
+    flota.marcas m ON c.Marca = m.Nombre_marcas
+INNER JOIN
+    flota.grupo g ON m.Grupo = g.Grupo_Empresarial
+INNER JOIN
+    flota.poliza p ON c.ID_coche = p.Coche
+INNER JOIN
+    flota.aseguradora a ON p.N_Poliza = a.Poliza;
